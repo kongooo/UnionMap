@@ -42,7 +42,6 @@ class DrawCanvas extends React.Component {
   canvasRef: React.RefObject<HTMLCanvasElement>;
   mapCount: Coord;
   noise: any;
-  vertics: Array<number>;
   obstacleBlocks: Array<Set<number>>;
   lineVertices: Array<number>;
   ctx: CanvasRenderingContext2D;
@@ -55,7 +54,6 @@ class DrawCanvas extends React.Component {
   constructor(props: any) {
     super(props);
     this.canvasRef = React.createRef();
-    this.vertics = [];
     this.obstacleBlocks = [];
     this.lineVertices = [];
   }
@@ -80,31 +78,7 @@ class DrawCanvas extends React.Component {
         if (num > THRESHOLD) {
           const X = x * size;
           const Y = y * size;
-          this.vertics.push(
-            ...[X, Y, X + size, Y, X + size, Y + size, X, Y + size]
-          );
-          const xHas =
-            x > 0 && this.noise.get((x - 1) / ZOOM, y / ZOOM) > THRESHOLD;
-          const yHas =
-            y > 0 && this.noise.get(x / ZOOM, (y - 1) / ZOOM) > THRESHOLD;
-          if (xHas && yHas) {
-            let xBlockIndex = this.getBlockIndex({ x: x - 1, y });
-            let yBlockIndex = this.getBlockIndex({ x, y: y - 1 });
-            if (xBlockIndex === yBlockIndex)
-              this.addToBlockIndex({ x, y }, xBlockIndex);
-            else {
-              const index = this.unionBlock(xBlockIndex, yBlockIndex);
-              this.addToBlockIndex({ x, y }, index);
-            }
-          } else if (xHas) {
-            let xBlockIndex = this.getBlockIndex({ x: x - 1, y });
-            this.addToBlockIndex({ x, y }, xBlockIndex);
-          } else if (yHas) {
-            let yBlockIndex = this.getBlockIndex({ x, y: y - 1 });
-            this.addToBlockIndex({ x, y }, yBlockIndex);
-          } else {
-            this.addToBlock({ x, y });
-          }
+          this.setBlock(x, y);
           this.drawBlocks();
           await sleep(50);
         }
@@ -112,6 +86,29 @@ class DrawCanvas extends React.Component {
 
     await this.drawBlocksLine();
     this.drawLines();
+  };
+
+  setBlock = (x: number, y: number) => {
+    const xHas = x > 0 && this.noise.get((x - 1) / ZOOM, y / ZOOM) > THRESHOLD;
+    const yHas = y > 0 && this.noise.get(x / ZOOM, (y - 1) / ZOOM) > THRESHOLD;
+    if (xHas && yHas) {
+      let xBlockIndex = this.getBlockIndex({ x: x - 1, y });
+      let yBlockIndex = this.getBlockIndex({ x, y: y - 1 });
+      if (xBlockIndex === yBlockIndex)
+        this.addToBlockIndex({ x, y }, xBlockIndex);
+      else {
+        const index = this.unionBlock(xBlockIndex, yBlockIndex);
+        this.addToBlockIndex({ x, y }, index);
+      }
+    } else if (xHas) {
+      let xBlockIndex = this.getBlockIndex({ x: x - 1, y });
+      this.addToBlockIndex({ x, y }, xBlockIndex);
+    } else if (yHas) {
+      let yBlockIndex = this.getBlockIndex({ x, y: y - 1 });
+      this.addToBlockIndex({ x, y }, yBlockIndex);
+    } else {
+      this.addToBlock({ x, y });
+    }
   };
 
   /**
