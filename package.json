@@ -1,0 +1,40 @@
+{
+    "name": "UnionShow",
+    "version": "1.0.0",
+    "description": "",
+    "private": true,
+    "dependencies": {
+        "css-loader": "^4.3.0",
+        "perlin-noise-3d": "^0.5.4",
+        "style-loader": "^1.2.1",
+        "webpack": "^5.30.0"
+    },
+    "devDependencies": {
+        "@types/react": "^16.9.49",
+        "@types/react-dom": "^16.9.8",
+        "@types/react-router": "^5.1.8",
+        "clean-webpack-plugin": "^3.0.0",
+        "csstype": "^3.0.3",
+        "eslint-plugin-react-hooks": "^4.1.2",
+        "file-loader": "^6.2.0",
+        "gl-mat4": "^1.2.0",
+        "gl-matrix": "^3.3.0",
+        "html-webpack-plugin": "^4.4.1",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "ts-loader": "^8.0.3",
+        "ts-shader-loader": "^1.0.6",
+        "typescript": "^4.0.2",
+        "webpack": "^4.44.1",
+        "webpack-cli": "^3.3.12",
+        "webpack-dev-server": "^3.11.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "watch": "webpack --watch",
+        "start": "webpack-dev-server --open"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}
